@@ -1,5 +1,5 @@
 {
-  "name": "@expand/node-deo-api",
+  "name": "node-expand-deo-api",
   "version": "1.0.0",
   "description": "Expand Online DEO API Client",
   "main": "index.js",
