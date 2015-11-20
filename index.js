@@ -97,7 +97,7 @@ module.exports = function(options){
     authorize: function(token){
       return Future(function(rej, res){
         var url = createUrl('deo_sessions/verify_session_id/security_suite', token);
-        request(url, function(err, response){
+        request({url: url, headers: {Cookie: 'DEO=' + token}}, function(err, response){
           try{
             err
             ? rej(err)
