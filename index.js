@@ -76,7 +76,7 @@ module.exports = function(options){
                 return rej(new Error('Failed to authenticate'));
               }
 
-              rej(cookie.split(';')[0].split('=')[1]);
+              res(cookie.split(';')[0].split('=')[1]);
 
             }
             catch(err){
