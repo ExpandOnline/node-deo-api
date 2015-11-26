@@ -3,6 +3,7 @@
 var md5 = require('crypto-md5');
 var Future = require('ramda-fantasy').Future;
 var request = require('request');
+var date = require('date-fp');
 
 module.exports = function(options){
 
@@ -33,57 +34,9 @@ module.exports = function(options){
      *
      * @return {Future} A Future of an Error or the token.
      */
-    authenticate: function(username, password){
+    authenticate: function(){
       return Future(function(rej, res){
-        request(
-          {
-            method: 'POST',
-            url: url + '/login',
-            form: {
-              _method: 'POST',
-              User: {
-                username: username,
-                password: password
-              }
-            }
-          },
-          function(err, response){
-            try{
-
-              if(err){
-                return rej(err);
-              }
-
-              if(response.statusCode >= 400){
-                return rej(new Error('Authentication server responded ' + response.statusCode));
-              }
-
-              if(response.statusCode === 200){
-                return rej(new Error('Invalid username or password'));
-              }
-
-              var cookies = response.headers['set-cookie'];
-
-              if(!(cookies && cookies.length > 0)){
-                return rej(new Error('Failed to authenticate'));
-              }
-
-              var cookie = cookies.filter(function(t){
-                return (/DEO=/).test(t)
-              })[0];
-
-              if(!cookie){
-                return rej(new Error('Failed to authenticate'));
-              }
-
-              res(cookie.split(';')[0].split('=')[1]);
-
-            }
-            catch(err){
-              rej(err);
-            }
-          }
-        )
+        res(md5(key + date.format('YYYY-MM-DD', new Date), 'hex'));
       });
     },
 
@@ -96,19 +49,12 @@ module.exports = function(options){
      */
     authorize: function(token){
       return Future(function(rej, res){
-        var url = createUrl('deo_sessions/verify_session_id/security_suite', token);
-        request({url: url, headers: {Cookie: 'DEO=' + token}}, function(err, response){
-          try{
-            err
-            ? rej(err)
-            : response.statusCode >= 400
-            ? rej(new Error('Authentication server responded ' + response.statusCode))
-            : res(JSON.parse(response.body).authenticated === true);
-          }
-          catch(err){
-            rej(err);
-          }
-        });
+        var today = new Date;
+        var yesterday = date.add('days', -1, today);
+        res(0
+          || md5(key + date.format('YYYY-MM-DD', today), 'hex') === token
+          || md5(key + date.format('YYYY-MM-DD', yesterday), 'hex') === token
+        );
       });
     },
 

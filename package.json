@@ -12,6 +12,7 @@
   "devDependencies": {},
   "dependencies": {
     "crypto-md5": "^1.0.0",
+    "date-fp": "^1.6.3",
     "ramda-fantasy": "^0.4.1",
     "request": "^2.65.0"
   }
