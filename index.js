@@ -1,7 +1,7 @@
 'use strict';
 
 var md5 = require('crypto-md5');
-var Future = require('ramda-fantasy').Future;
+var Future = require('fluture');
 var request = require('request');
 var date = require('date-fp');
 
