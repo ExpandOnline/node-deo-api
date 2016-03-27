@@ -50,9 +50,11 @@ module.exports = function(Future, options){
       return Future(function(rej, res){
         var today = new Date;
         var yesterday = date.add('days', -1, today);
+        var tomorrow = date.add('days', 1, today);
         res(0
           || md5(key + date.format('YYYY-MM-DD', today), 'hex') === token
           || md5(key + date.format('YYYY-MM-DD', yesterday), 'hex') === token
+          || md5(key + date.format('YYYY-MM-DD', tomorrow), 'hex') === token
         );
       });
     },
