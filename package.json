@@ -13,7 +13,6 @@
   "dependencies": {
     "crypto-md5": "^1.0.0",
     "date-fp": "^1.6.3",
-    "fluture": "^0.5.2",
     "request": "^2.65.0"
   }
 }

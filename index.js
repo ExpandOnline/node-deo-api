@@ -1,11 +1,10 @@
 'use strict';
 
 var md5 = require('crypto-md5');
-var Future = require('fluture');
 var request = require('request');
 var date = require('date-fp');
 
-module.exports = function(options){
+module.exports = function(Future, options){
 
   var url = options.url || 'https://deo.expandonline.nl';
   var key = String(options.key);
